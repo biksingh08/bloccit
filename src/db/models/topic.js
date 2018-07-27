@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Topic = sequelize.define('Topic', {
+  var Topic = sequelize.define('Topics', {
     title: DataTypes.STRING,
     description: DataTypes.STRING
   }, {});
@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "topicId",
       as: "banners",
     });
-    };
+    Topic.hasMany(models.Rule, {
+      foreignKey: "topicId",
+      as: "rules",
+    });
+  };
   return Topic;
 };
