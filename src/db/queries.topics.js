@@ -36,6 +36,7 @@ module.exports = {
        callback(err);
      })
   },
+
   deleteTopic(id, callback){
     return Topic.destroy({
       where: {id}
