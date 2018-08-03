@@ -38,6 +38,7 @@ module.exports = {
 
   //#1
     topicQueries.getTopic(req.params.id, (err, topic) => {
+      console.log(topic);
 
   //#2
       if(err || topic == null){
