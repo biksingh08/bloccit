@@ -91,7 +91,6 @@ describe("routes : posts", () => {
         done();
       });
     });
-
    });
 
    describe("POST /topics/:topicId/posts/:id/destroy", () => {
@@ -111,9 +110,7 @@ describe("routes : posts", () => {
            done();
          })
        });
-
      });
-
    });
 
   describe("GET /topics/:topicId/posts/:id/edit", () => {
@@ -126,7 +123,6 @@ describe("routes : posts", () => {
         done();
       });
     });
-
   });
 
   describe("POST /topics/:topicId/posts/:id/update", () => {
