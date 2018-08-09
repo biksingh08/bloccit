@@ -80,7 +80,6 @@ describe("routes : posts", () => {
        );
      });
 
-     it("should not create a new post that fails validations", (done) => {/* spec implementation */});
 
       it("should not create a new post that fails validations", (done) => {
         const options = {
@@ -173,12 +172,12 @@ describe("routes : posts", () => {
         const options = {
           url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
           form: {
-            title: "Snowman Building Competition"
+            title: "Snowman Building Competition",
+            body: "moooooooooooooooo"
           }
         };
         request.post(options,
           (err, res, body) => {
-
           expect(err).toBeNull();
 
           Post.findOne({
@@ -186,6 +185,7 @@ describe("routes : posts", () => {
           })
           .then((post) => {
             expect(post.title).toBe("Snowman Building Competition");
+
             done();
           });
         });

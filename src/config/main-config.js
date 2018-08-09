@@ -20,6 +20,6 @@ module.exports = {
       saveUninitialized: false,
       cookie: { maxAge: 60000 }
     }));
-app.use(flash());
+    app.use(flash());
   }
 };

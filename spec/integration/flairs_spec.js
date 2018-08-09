@@ -8,7 +8,6 @@ const Flair = require("../../src/db/models").Flair;
 
 
 describe("routes : flairs", () => {
-
   beforeEach((done) => {
     this.topic;
     this.flair;
@@ -24,9 +23,9 @@ describe("routes : flairs", () => {
         this.topic = topic;
 
         Flair.create({
-          name: "Tag me",
-          color: "Blue",
-          topicId: this.topic.id;
+          name: "nice flair",
+          color: "white",
+          topicId: this.topic.id
         })
         .then((flair) => {
           this.flair = flair;
@@ -43,7 +42,7 @@ describe("routes : flairs", () => {
   describe("GET /topics/:topicId/flairs/new", () => {
 
     it("should render a new flair form", (done) => {
-      request.get(`${base}/${topic.id}/flairs/new`, (err, res, body) => {
+      request.get(`${base}/${this.topic.id}/flairs/new`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("New Flair");
         done();
@@ -58,17 +57,16 @@ describe("routes : flairs", () => {
        const options = {
          url: `${base}/${this.topic.id}/flairs/create`,
          form: {
-           name: "funny tag",
+           name: "good flair",
            color: "black"
          }
        };
        request.post(options,
          (err, res, body) => {
-
-           Flair.findOne({where: {name: "funny tag"}})
+           Flair.findOne({where: {name: "good flair"}})
            .then((flair) => {
              expect(flair).not.toBeNull();
-             expect(flair.name).toBe("funny tag");
+             expect(flair.name).toBe("good flair");
              expect(flair.color).toBe("black");
              expect(flair.topicId).not.toBeNull();
              done();
@@ -80,7 +78,6 @@ describe("routes : flairs", () => {
          }
        );
      });
-
   });
 
   describe("GET /topics/:topicId/flairs/:id", () => {
@@ -88,34 +85,31 @@ describe("routes : flairs", () => {
     it("should render a view with the selected flair", (done) => {
       request.get(`${base}/${this.topic.id}/flairs/${this.flair.id}`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("Snowball Fighting");
+        expect(body).toContain("nice flair");
         done();
       });
     });
+   });
 
-  });
+   describe("POST /topics/:topicId/flairs/:id/destroy", () => {
 
-  describe("POST /topics/:topicId/flairs/:id/destroy", () => {
+     it("should delete the flair with the associated ID", (done) => {
 
-    it("should delete the flair with the associated ID", (done) => {
+//#1
+       expect(this.flair.id).toBe(1);
 
-  //#1
-      expect(flair.id).toBe(1);
+       request.post(`${base}/${this.topic.id}/flairs/${this.flair.id}/destroy`, (err, res, body) => {
 
-      request.post(`${base}/${this.topic.id}/flairs/${this.flair.id}/destroy`, (err, res, body) => {
-
-  //#2
-        Flair.findById(1)
-        .then((flair) => {
-          expect(err).toBeNull();
-          expect(flair).toBeNull();
-          done();
-        })
-      });
-
-    });
-
-  });
+//#2
+         Flair.findById(1)
+         .then((flair) => {
+           expect(err).toBeNull();
+           expect(flair).toBeNull();
+           done();
+         })
+       });
+     });
+   });
 
   describe("GET /topics/:topicId/flairs/:id/edit", () => {
 
@@ -123,20 +117,19 @@ describe("routes : flairs", () => {
       request.get(`${base}/${this.topic.id}/flairs/${this.flair.id}/edit`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("Edit Flair");
-        expect(body).toContain("Snowball Fighting");
+        expect(body).toContain("nice flair");
         done();
       });
     });
-
   });
 
   describe("POST /topics/:topicId/flairs/:id/update", () => {
 
     it("should return a status code 302", (done) => {
       request.post({
-        url: `${base}/${topic.id}/posts/${flair.id}/update`,
+        url: `${base}/${this.topic.id}/flairs/${this.flair.id}/update`,
         form: {
-          name: "Snowman Building Competition",
+          name: "boo",
           color: "brown"
         }
       }, (err, res, body) => {
@@ -147,26 +140,55 @@ describe("routes : flairs", () => {
 
     it("should update the flair with the given values", (done) => {
         const options = {
-          url: `${base}/${this.topic.id}/posts/${this.flair.id}/update`,
+          url: `${base}/${this.topic.id}/flairs/${this.flair.id}/update`,
           form: {
-            name: "Snowman Building Competition"
+            name: "boo",
+            color: "white"
           }
         };
         request.post(options,
           (err, res, body) => {
-
           expect(err).toBeNull();
 
           Flair.findOne({
             where: {id: this.flair.id}
           })
           .then((flair) => {
-            expect(flair.name).toBe("Snowman Building Competition");
+            expect(flair.name).toBe("boo");
             done();
           });
         });
     });
 
   });
+
+  describe("validations", () => {
+
+     it("should not create a new flair that fails validations", (done) => {
+       const options = {
+         url: `${base}/${this.topic.id}/flairs/create`,
+         form: {
+   //#1
+           name: "a",
+           color: "bb"
+         }
+       };
+
+       request.post(options,
+         (err, res, body) => {
+   //#2
+           Flair.findOne({where: {name: "a"}})
+           .then((flair) => {
+               expect(flair).toBeNull();
+               done();
+           })
+           .catch((err) => {
+             console.log(err);
+             done();
+           });
+         }
+       );
+     });
+   });
 
 });

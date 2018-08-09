@@ -21,7 +21,8 @@ module.exports = {
    create(req, res, next){
     let newFlair = {
       name: req.body.name,
-      color: req.body.color
+      color: req.body.color,
+      topicId: req.params.topicId
     };
     flairQueries.addFlair(newFlair, (err, flair) => {
       if(err){
@@ -33,10 +34,8 @@ module.exports = {
   },
 
   show(req, res, next){
-
   //#1
     flairQueries.getFlair(req.params.id, (err, flair) => {
-
   //#2
       if(err || flair == null){
         res.redirect(404, "/");
@@ -69,7 +68,6 @@ module.exports = {
   update(req, res, next){
   //#1
     flairQueries.updateFlair(req.params.id, req.body, (err, flair) => {
-
   //#2
       if(err || flair == null){
         res.redirect(404, `/flairs/${req.params.id}/edit`);

@@ -29,7 +29,8 @@ module.exports = {
   addFlair(newFlair, callback){
     return Flair.create({
       name: newFlair.name,
-      color: newFlair.color
+      color: newFlair.color,
+      topicId: newFlair.topicId
     })
     .then((flair) => {
       callback(null, flair);
