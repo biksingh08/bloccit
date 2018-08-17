@@ -194,6 +194,7 @@ describe("member user performing CRUD actions for Topic", () => {
     request.get({
       url: "http://localhost:3000/auth/fake",
       form: {
+        userId: 10,
         role: "member"
       }
     },
@@ -329,6 +330,7 @@ describe("member user performing CRUD actions for Topic", () => {
            where: { id: this.topic.id }
          })
          .then((topic) => {
+           console.log("check topic", this.topic.id);
            expect(topic.title).toBe("JavaScript Frameworks");
            done();
          });

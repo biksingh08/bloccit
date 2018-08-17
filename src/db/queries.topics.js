@@ -1,5 +1,6 @@
 const Topic = require("./models").Topic;
 const Post = require("./models").Post;
+const Authorizer = require("../policies/topic");
 
 module.exports = {
 
@@ -85,7 +86,6 @@ module.exports = {
       const authorized = new Authorizer(req.user, topic).update();
 
       if(authorized) {
-
 // #4
         topic.update(updatedTopic, {
           fields: Object.keys(updatedTopic)

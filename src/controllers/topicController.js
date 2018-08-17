@@ -71,6 +71,8 @@ module.exports = {
 
 // #1
     topicQueries.deleteTopic(req, (err, topic) => {
+      console.log("error for topic");
+      console.log(err);
       if(err){
         res.redirect(err, `/topics/${req.params.id}`)
       } else {
@@ -102,7 +104,6 @@ module.exports = {
   },
 
   update(req, res, next){
-// #1
     topicQueries.updateTopic(req, req.body, (err, topic) => {
       if(err || topic == null){
         res.redirect(401, `/topics/${req.params.id}/edit`);
