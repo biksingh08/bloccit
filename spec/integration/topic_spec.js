@@ -194,7 +194,6 @@ describe("member user performing CRUD actions for Topic", () => {
     request.get({
       url: "http://localhost:3000/auth/fake",
       form: {
-        userId: 10,
         role: "member"
       }
     },

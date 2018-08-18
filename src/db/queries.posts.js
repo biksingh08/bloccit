@@ -23,8 +23,8 @@ module.exports = {
    })
  },
 
- deletePost(req, id, callback){
-   return Post.findById(id)
+ deletePost(req, callback){
+   return Post.findById(req.params.id)
       .then((post) => {
         const authorized = new Authorizer(req.user, post).destroy();
 
@@ -43,8 +43,7 @@ module.exports = {
       });
     },
 
- updatePost(req, id, updatedPost, callback){
-
+ updatePost(req, updatedPost, callback){
    return Post.findById(req.params.id)
    .then((post) => {
      if(!post){

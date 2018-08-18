@@ -72,7 +72,6 @@ module.exports = {
   },
 
   updateTopic(req, updatedTopic, callback){
-
 // #1
     return Topic.findById(req.params.id)
     .then((topic) => {

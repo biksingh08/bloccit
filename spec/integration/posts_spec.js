@@ -53,7 +53,8 @@ describe("routes : posts", () => {
        request.get({
          url: "http://localhost:3000/auth/fake",
          form: {
-           userId: 10,
+           userId: 1,
+           email: "bob@yahoo.com",
            role: "member"
          }
        },
@@ -132,7 +133,6 @@ describe("routes : posts", () => {
              role: user.role,     // mock authenticate as admin user
              userId: user.id,
              email: user.email
-
            }
          },
            (err, res, body) => {
@@ -202,8 +202,9 @@ describe("routes : posts", () => {
             form: {
               title: "Snowman Building Competition",
               body: "I love watching them melt slowly."
-            }
+              }
           }, (err, res, body) => {
+            console.log("body stufff", body);
             expect(res.statusCode).toBe(302);
             done();
           });

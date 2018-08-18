@@ -60,7 +60,7 @@ module.exports = {
 
  edit(req, res, next){
 
-   postQueries.getPost(req.params.id, (err, post) => {
+   postQueries.getPost(req, (err, post) => {
       if(err || post == null){
         res.redirect(404, "/");
       } else {
@@ -80,7 +80,7 @@ module.exports = {
 
   update(req, res, next){
 
-    postQueries.updatePost(req.params.id, req.body, (err, post) => {
+    postQueries.updatePost(req, req.body, (err, post) => {
     if(err || topic == null){
       res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
     } else {
