@@ -78,10 +78,10 @@ describe("Topic", () => {
             Post.create({
               title: "Favourite cartoons",
               body: "All of them",
-              topicId: this.topic.id
+              topicId: this.topic.id,
+              userId: this.post.userId  //This line was missing
             })
             .then((post) => {
-
       //#2
               expect(post.title).toBe("Favourite cartoons");
               expect(post.body).toBe("All of them");

@@ -16,9 +16,9 @@ describe("routes : posts", () => {
      sequelize.sync({force: true}).then((res) => {
 
        User.create({
-         email: "starman@tesla.com",
-         password: "Trekkie4lyfe",
-         id: 10
+         email: "admin@example.com",
+         password: "123456",
+         id: 3
        })
        .then((user) => {
          this.user = user;
@@ -49,19 +49,25 @@ describe("routes : posts", () => {
    describe("member user performing CRUD actions for posts", () => {
 
      beforeEach((done) => {
-
-       request.get({
-         url: "http://localhost:3000/auth/fake",
-         form: {
-           userId: 1,
-           email: "bob@yahoo.com",
-           role: "member"
-         }
-       },
-         (err, res, body) => {
-           done();
-         }
-       );
+       User.create({
+         email: "admin@example.com",
+         password: "123456",
+         role: "member"
+       })
+       .then((user) => {
+         request.get({         // mock authentication
+           url: "http://localhost:3000/auth/fake",
+           form: {
+             role: user.role,     // mock authenticate as admin user
+             userId: user.id,
+             email: user.email
+           }
+         },
+           (err, res, body) => {
+             done();
+           }
+         );
+       });
      });
 
      describe("GET /topics/:topicId/posts/new", () => {
@@ -82,7 +88,8 @@ describe("routes : posts", () => {
             url: `${base}/${this.topic.id}/posts/create`,
             form: {
               title: "Watching snow melt",
-              body: "Without a doubt my favoriting things to do besides watching paint dry!"
+              body: "Without a doubt my favoriting things to do besides watching paint dry!",
+              userId: this.post.userId
             }
           };
           request.post(options,
@@ -160,7 +167,8 @@ describe("routes : posts", () => {
             url: `${base}/${this.topic.id}/posts/create`,
             form: {
               title: "Watching snow melt",
-              body: "Without a doubt my favoriting things to do besides watching paint dry!"
+              body: "Without a doubt my favoriting things to do besides watching paint dry!",
+              userId: this.post.userId
             }
           };
           request.post(options,
@@ -201,10 +209,10 @@ describe("routes : posts", () => {
             url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
             form: {
               title: "Snowman Building Competition",
-              body: "I love watching them melt slowly."
+              body: "I love watching them melt slowly.",
+              userId: this.user.id
               }
           }, (err, res, body) => {
-            console.log("body stufff", body);
             expect(res.statusCode).toBe(302);
             done();
           });
@@ -215,7 +223,8 @@ describe("routes : posts", () => {
               url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
               form: {
                 title: "Snowman Building Competition",
-                body: "moooooooooooooooo"
+                body: "moooooooooooooooo",
+                userId: this.post.userId
               }
             };
             request.post(options,
@@ -271,16 +280,25 @@ describe("routes : posts", () => {
    describe("owner user performing CRUD actions for Posts", () => {
 
      beforeEach((done) => {
-       request.get({
-         url: "http://localhost:3000/auth/fake",
-         form: {
-           role: "owner"
-         }
-       },
-         (err, res, body) => {
-           done();
-         }
-       );
+       User.create({
+         email: "admin@example.com",
+         password: "123456",
+         role: "owner"
+       })
+       .then((user) => {
+         request.get({         // mock authentication
+           url: "http://localhost:3000/auth/fake",
+           form: {
+             role: user.role,     // mock authenticate as admin user
+             userId: user.id,
+             email: user.email
+           }
+         },
+           (err, res, body) => {
+             done();
+           }
+         );
+       });
      });
 
      describe("GET /topics/:topicId/posts/:id/edit", () => {
@@ -288,6 +306,7 @@ describe("routes : posts", () => {
        it("should render a view with an edit post form", (done) => {
          request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
            expect(err).toBeNull();
+           console.log(body);
            expect(body).toContain("Edit Post");
            expect(body).toContain("Snowball Fighting");
            done();
@@ -302,7 +321,8 @@ describe("routes : posts", () => {
            url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
            form: {
              title: "Snowman Building Competition",
-             body: "I love watching them melt slowly."
+             body: "I love watching them melt slowly.",
+             userId: this.post.userId
            }
          }, (err, res, body) => {
            expect(res.statusCode).toBe(302);
@@ -315,7 +335,8 @@ describe("routes : posts", () => {
              url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
              form: {
                title: "Snowman Building Competition",
-               body: "moooooooooooooooo"
+               body: "moooooooooooooooo",
+               userId: this.post.userId
              }
            };
            request.post(options,
@@ -377,7 +398,8 @@ describe("routes : posts", () => {
 
     //#1
             title: "a",
-            body: "b"
+            body: "b",
+            userId: this.post.userId
           }
         };
 

@@ -13,8 +13,8 @@ module.exports = {
    })
  },
 
- getPost(id, callback){
-   return Post.findById(id)
+ getPost(req, callback){
+   return Post.findById(req.params.id)
    .then((post) => {
      callback(null, post);
    })

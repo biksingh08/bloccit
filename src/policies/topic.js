@@ -17,8 +17,8 @@ module.exports = class TopicPolicy extends ApplicationPolicy {
 
 // #3
  edit() {
-   return this._isAdmin();
- }
+return this._isAdmin() || this._isOwner() 
+}
 
  update() {
    return this.edit();

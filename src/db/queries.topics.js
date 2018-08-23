@@ -29,8 +29,8 @@ module.exports = {
       callback(err);
     })
   },
-  getTopic(id, callback){
-    return Topic.findById(id, {
+  getTopic(req, callback){
+    return Topic.findById(req.params.id, {
       include: [{
         model: Post,
         as: "posts"

@@ -56,7 +56,7 @@ module.exports = {
   show(req, res, next){
 
   //#1
-    topicQueries.getTopic(req.params.id, (err, topic) => {
+    topicQueries.getTopic(req, (err, topic) => {
 
   //#2
       if(err || topic == null){
@@ -71,8 +71,6 @@ module.exports = {
 
 // #1
     topicQueries.deleteTopic(req, (err, topic) => {
-      console.log("error for topic");
-      console.log(err);
       if(err){
         res.redirect(err, `/topics/${req.params.id}`)
       } else {
@@ -84,7 +82,8 @@ module.exports = {
   edit(req, res, next){
 
 // #1
-    topicQueries.getTopic(req.params.id, (err, topic) => {
+    topicQueries.getTopic(req, (err, topic) => {
+      console.log("topic check", topic);
       if(err || topic == null){
         res.redirect(404, "/");
       } else {

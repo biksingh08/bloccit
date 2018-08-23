@@ -8,6 +8,7 @@ module.exports = class ApplicationPolicy {
 
  // #2
   _isOwner() {
+    console.log("moooo", this.record.userId, this.user.id);
     return this.record && (this.record.userId == this.user.id);
   }
 

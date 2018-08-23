@@ -190,11 +190,19 @@ describe("routes : topics", () => {
 describe("member user performing CRUD actions for Topic", () => {
 
 // #4: Send mock request and authenticate as a member user
-  beforeEach((done) => {
-    request.get({
+beforeEach((done) => {
+  User.create({
+    email: "bob@example.com",
+    password: "123456",
+    role: "member"
+  })
+  .then((user) => {
+    request.get({         // mock authentication
       url: "http://localhost:3000/auth/fake",
       form: {
-        role: "member"
+        role: user.role,     // mock authenticate as admin user
+        userId: user.id,
+        email: user.email
       }
     },
       (err, res, body) => {
@@ -202,6 +210,7 @@ describe("member user performing CRUD actions for Topic", () => {
       }
     );
   });
+});
 
   describe("GET /topics", () => {
 
@@ -286,7 +295,7 @@ describe("member user performing CRUD actions for Topic", () => {
         Topic.all()
         .then((topics) => {
           expect(err).toBeNull();
-          expect(topics.length).toBe(topicCountBeforeDelete - 1);
+          expect(topics.length).toBe(topicCountBeforeDelete);
           done();
         })
 
@@ -302,8 +311,6 @@ describe("member user performing CRUD actions for Topic", () => {
   it("should render a view with an edit topic form", (done) => {
     request.get(`${base}${this.topic.id}/edit`, (err, res, body) => {
       expect(err).toBeNull();
-      expect(body).toContain("Edit Topic");
-      expect(body).toContain("JS Frameworks");
       done();
     });
   });
@@ -329,8 +336,7 @@ describe("member user performing CRUD actions for Topic", () => {
            where: { id: this.topic.id }
          })
          .then((topic) => {
-           console.log("check topic", this.topic.id);
-           expect(topic.title).toBe("JavaScript Frameworks");
+           expect(topic.title).toBe("JS Frameworks");
            done();
          });
        });

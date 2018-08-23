@@ -82,7 +82,6 @@ describe("Post", () => {
 
       })
       .catch((err) => {
-
         expect(err.message).toContain("Post.body cannot be null");
         expect(err.message).toContain("Post.topicId cannot be null");
         done();
