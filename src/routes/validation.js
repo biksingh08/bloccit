@@ -64,5 +64,10 @@ module.exports = {
       req.checkBody("password", "must be at least 6 characters in length").isLength({min: 6})
       req.checkBody("passwordConfirmation", "must match password provided").optional().matches(req.body.password);
     });
+  }, 
+  validateComments(req, res, next){
+    return handleValidation(req, res, next, 'POST', () => {
+      req.checkBody("body", "must not be empty"). notEmpty();
+    });
   }
 }
