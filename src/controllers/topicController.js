@@ -83,7 +83,6 @@ module.exports = {
 
 // #1
     topicQueries.getTopic(req, (err, topic) => {
-      console.log("topic check", topic);
       if(err || topic == null){
         res.redirect(404, "/");
       } else {

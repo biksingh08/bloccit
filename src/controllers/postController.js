@@ -66,7 +66,6 @@ module.exports = {
       } else {
 
            const authorized = new Authorizer(req.user, post).edit();
-           console.log("post check", post);
    // #3
            if(authorized){
              res.render("posts/edit", {post});

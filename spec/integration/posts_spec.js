@@ -306,7 +306,6 @@ describe("routes : posts", () => {
        it("should render a view with an edit post form", (done) => {
          request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
            expect(err).toBeNull();
-           console.log(body);
            expect(body).toContain("Edit Post");
            expect(body).toContain("Snowball Fighting");
            done();

@@ -3,6 +3,7 @@ const User = require("./models").User;
 const bcrypt = require("bcryptjs");
 const Post = require("./models").Post;
 const Comment = require("./models").Comment;
+const Favorite = require("./models").Favorite;
 
 module.exports = {
 // #2
@@ -46,13 +47,19 @@ module.exports = {
           .then((comments) => {
  // #7
             result["comments"] = comments;
-            callback(null, result);
+
+          Favorite.scope({method: ["favoritedPosts", id]}).all()
+          .then((favorites) => {
+
+              result["favorites"] = favorites;
+          callback(null, result);
           })
           .catch((err) => {
             callback(err);
           })
         })
-      }
+      })
+    }
     })
   }
 
