@@ -257,7 +257,6 @@ describe("Vote", () => {
        })
        .then((vote) => {
          this.vote = vote;     // store it
-
          Post.create({         // create a new post
            title: "Dress code on Proxima b",
            body: "Spacesuit, space helmet, space boots, and space gloves",
@@ -316,6 +315,7 @@ describe("Vote", () => {
               title: "This post is excellent",
               body: "You don't need to look in here.",
               userId: this.user.id,
+              topicId: this.topic.id,
               votes: [{
                   value: 1,
                   userId: this.user.id,

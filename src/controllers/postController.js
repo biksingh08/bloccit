@@ -25,6 +25,7 @@ module.exports = {
           userId: req.user.id
         };
         postQueries.addPost(newPost, (err, post) => {
+          console.info("post datavalue check", post.topicId );
           if(err){
             res.redirect(500, "/posts/new");
           } else {

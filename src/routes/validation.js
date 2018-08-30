@@ -41,6 +41,7 @@ function handleValidateUsers(req, res, next, method, validation) {
 
 module.exports = {
   validatePosts(req, res, next) {
+    console.log("post validation check", req.body);
     return handleValidation(req, res, next, 'POST', () => {
       req.checkBody("title", "must be at least 2 characters in length").isLength({min: 2});
       req.checkBody("body", "must be at least 10 characters in length").isLength({min: 10});
@@ -64,7 +65,7 @@ module.exports = {
       req.checkBody("password", "must be at least 6 characters in length").isLength({min: 6})
       req.checkBody("passwordConfirmation", "must match password provided").optional().matches(req.body.password);
     });
-  }, 
+  },
   validateComments(req, res, next){
     return handleValidation(req, res, next, 'POST', () => {
       req.checkBody("body", "must not be empty"). notEmpty();
